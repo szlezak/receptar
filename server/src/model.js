@@ -2,16 +2,21 @@ import mongoose from 'mongoose';
 
 import { Schema } from 'mongoose';
 
+const ingredientSchema = new Schema({
+  name: String,
+  amount: Number,
+  amountUnit: String,
+});
+
 const recipeSchema = new Schema({
-  id: String,
   title: String,
   preparationTime: Number,
   servingCount: Number,
   sideDish: String,
   directions: String,
-  // lastModifiedDate: Date,
+  ingredients: [ingredientSchema]
 });
+
 const recipeModel = mongoose.model('recipe', recipeSchema);
 
 export { recipeModel };
-

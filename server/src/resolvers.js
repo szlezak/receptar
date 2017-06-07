@@ -6,22 +6,17 @@ let nextId = 3;
 export const resolvers = {
   Query: {
     recipes: () => {
-      return mongo.model('recipe').find().then(a =>
-        a.map(recipe => recipe)
+      return mongo.model('recipe').find().then(recipes =>
+        recipes.map(recipe => recipe)
       );
     },
   },
 
   Mutation: {
     addRecipe: (root, args) => {
-      const recipe = new recipeModel({
-        id: nextId++,
-        title: args.title,
-        preparationTime: args.preparationTime,
-        servingCount: args.servingCount,
-        sideDish: args.sideDish,
-        directions: args.directions,
-      });
+      const { input } = args || {};
+
+      const recipe = new recipeModel({ ...input });
 
       recipe.save().then((newRecipe) => {
         console.log('saved', newRecipe)
