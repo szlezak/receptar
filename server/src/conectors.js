@@ -2,11 +2,12 @@ import bluebird from 'bluebird';
 import mongoose from 'mongoose';
 
 mongoose.Promise = bluebird;
+mongoose.connect('mongodb://localhost/receptar');
 
-mongoose.connect('mongodb://localhost/receptar')
-const mongo = mongoose.connection;
+const db = mongoose.connection;
 
-mongo.on('error', () => console.log('Failed to connect to database'))
-  .once('open', () => console.log('Connected to DB'))
+db.on('error', () => console.log('Failed to connect to database'));
+db.on('close', () => console.log('Connection closed'));
+db.on('open', () => console.log('Connected to DB'));
 
-export { mongo };
+export { db };

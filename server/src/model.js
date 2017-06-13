@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const ingredientSchema = new Schema({
   name: String,
