@@ -1,6 +1,7 @@
 const typeDefs = `
   type Query {
    recipes: [Recipe]
+   recipe(id: String!): Recipe
   }
 
   type Recipe {

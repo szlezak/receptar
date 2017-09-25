@@ -8,6 +8,9 @@ export const resolvers = {
         recipes.map(recipe => recipe)
       );
     },
+    recipe: (_, { id }) => {
+      return db.model('recipe').findOne({ "_id": id }).then(recipe => recipe);
+    },
   },
 
   Mutation: {

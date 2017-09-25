@@ -1,6 +1,29 @@
 import React, { Component  } from 'react';
-import { ScrollView  } from 'react-native';
-import { View, Text, Image, TouchableHighlight } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
+
+const styles = StyleSheet.create({
+  cellWrapper: {
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  image: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
+  title: {
+    fontSize: 20,
+  },
+});
 
 class RecipeCell extends Component {
   _onCellPress = () => {
@@ -9,18 +32,22 @@ class RecipeCell extends Component {
     onPress({ recipeData });
   }
 
+  _getImageSource = () => {
+    // TODO: recipe image from props
+  }
+
   render() {
     const { onPress, recipeData } = this.props;
-    const { title, image } = recipeData || {};
+    const { title } = recipeData || {};
 
     return (
       <TouchableHighlight onPress={this._onCellPress}>
-        <View>
+        <View style={styles.cellWrapper}>
           <Image
-            style={{width: 50, height: 50}}
-            source={{uri: image}}
+            style={styles.image}
+            source={require('../assets/icon-image.png')}
           />
-          <Text>{title}</Text>
+          <Text style={styles.title}>{title}</Text>
         </View>
       </TouchableHighlight>
     );

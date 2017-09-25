@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, TouchableHighlight } from 'react-native';
+import {
+  ListView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import BasicText from '../components/BasicText';
+import BasicText from '../components/common/BasicText';
 import RecipeCell from '../components/RecipeCell';
+
+const styles = StyleSheet.create({
+  listWrapper: {
+    flex: 1,
+  },
+});
 
 class RecipeList extends Component {
   constructor(props) {
@@ -19,8 +31,7 @@ class RecipeList extends Component {
   }
 
   _onRecipePress = ({ recipeData }) => {
-    console.log(recipeData)
-    // this.props.navigation.navigate('RecipeDetail', { ...recipeData });
+    this.props.navigation.navigate('RecipeDetail', { ...recipeData });
   };
 
   _renderRecipeCell = (rowData, sectionID, rowID) => {
@@ -30,7 +41,6 @@ class RecipeList extends Component {
   render() {
     const { data } = this.props || {};
     const { error, loading, recipes } = data || {};
-    console.log(data)
 
     if (error) {
       return <BasicText text="An unexpected error occurred" />;
@@ -43,7 +53,7 @@ class RecipeList extends Component {
     const dataSource = this.state.ds.cloneWithRows(recipes);
 
     return (
-      <View>
+      <View style={styles.listWrapper}>
         <ListView
           dataSource={dataSource}
           renderRow={this._renderRecipeCell}
@@ -61,7 +71,7 @@ const RecipeListQuery = gql`
       title
     }
   }
-`
+`;
 
 const RecipeListWithData = graphql(RecipeListQuery)(RecipeList)
 
