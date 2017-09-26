@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Text,
-  View,
-  StyleSheet,
   Animated,
   Easing,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -41,6 +41,7 @@ class StatusBar extends Component {
         visible: true,
       });
     }
+
     Animated.timing(
       this._visibility,
       {
@@ -75,12 +76,14 @@ class StatusBar extends Component {
         },
       ],
     };
+
     const combinedStyle = [containerStyle, style];
+
     return (
-        <Animated.View style={this.state.visible ? combinedStyle : containerStyle} {...rest}>
-          {this.state.visible ? this.renderBar() : null}
-        </Animated.View>
-      );
+      <Animated.View style={this.state.visible ? combinedStyle : containerStyle} {...rest}>
+        {this.state.visible ? this.renderBar() : null}
+      </Animated.View>
+    );
   }
 }
 
