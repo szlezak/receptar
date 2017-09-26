@@ -3,6 +3,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
   StyleSheet,
  } from 'react-native';
 import t from 'tcomb-form-native';
@@ -57,17 +58,18 @@ const options = {
     },
     directions: {
       multiline: true,
+      help: 'Markdown: *) divides lines',
       stylesheet: {
           ...Form.stylesheet,
           textbox: {
             ...Form.stylesheet.textbox,
             normal: {
               ...Form.stylesheet.textbox.normal,
-              height: 150,
+              height: 200,
             },
             error: {
               ...Form.stylesheet.textbox.error,
-              height: 150,
+              height: 200,
             },
           },
         },
@@ -116,7 +118,7 @@ _onPress = () => {
           visible={this.state.visible}
           text={'Done!'}
         />
-        <View style={styles.wrapper}>
+        <ScrollView style={styles.wrapper}>
           <Form
             ref="recipeForm"
             type={Recipe}
@@ -127,7 +129,7 @@ _onPress = () => {
             onPress={this._onPress}>
             <Text style={styles.buttonTextStyle}>Save</Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       </View>
     );
   }
