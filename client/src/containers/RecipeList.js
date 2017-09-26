@@ -64,7 +64,7 @@ class RecipeList extends Component {
   }
 }
 
-const RecipeListQuery = gql`
+export const RecipeListQuery = gql`
   query RecipeListQuery {
     recipes {
       _id

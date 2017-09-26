@@ -4,6 +4,8 @@ import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+import { RecipeListQuery } from './RecipeList';
+
 const Form = t.form.Form;
 
 const Recipe = t.struct({
@@ -14,21 +16,38 @@ const Recipe = t.struct({
 });
 
 class NewRecipe extends Component {
-  // _clearForm = () => {
-  //   this.setState({ value: null });
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: null,
+    };
+  }
+
+  _onChange = (value) => {
+    this.setState({ value });
+  }
+
+  _clearForm = () => {
+    this.setState({ value: null });
+  }
 
   _onPress = () => {
     const value = this.refs.recipeForm.getValue();
-console.log(this.props)
-    if (value) {
-      this.props.mutate({
-        variables: {
-          recipe: {
-            title: value.title,
-          }
-        },
-      });
-    }
+    const validate = this.refs.recipeForm.validate();
+
+    if (!value) { return null; }
+
+    this.props.mutate({
+      variables: {
+        recipe: {
+          title: value.title,
+        }
+      },
+      refetchQueries: [ { query: RecipeListQuery }],
+    });
+
+    this._clearForm();
   }
 
   render() {
@@ -38,6 +57,8 @@ console.log(this.props)
         <Form
           ref="recipeForm"
           type={Recipe}
+          value={this.state.value}
+          onChange={this._onChange}
         />
         <TouchableHighlight onPress={this._onPress}>
           <Text>Save</Text>
