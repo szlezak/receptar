@@ -11,6 +11,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import BasicText from '../components/common/BasicText';
+import LoadingIndicator from '../components/common/LoadingIndicator';
 import RecipeCell from '../components/RecipeCell';
 
 const styles = StyleSheet.create({
@@ -46,8 +47,8 @@ class RecipeList extends Component {
       return <BasicText text="An unexpected error occurred" />;
     }
 
-    if (loading || !recipes) {
-      return <BasicText text="Loading" />;
+    if (loading) {
+      return <LoadingIndicator />;
     }
 
     const dataSource = this.state.ds.cloneWithRows(recipes);

@@ -5,10 +5,21 @@ import {
   View,
 } from 'react-native';
 
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  label: {
+    fontSize: 18,
+  },
+});
+
 function BasicText({ text }) {
   return (
-    <View>
-      <Text>{text}</Text>
+    <View style={styles.wrapper}>
+      <Text style={styles.label}>{text}</Text>
     </View>
   );
 }

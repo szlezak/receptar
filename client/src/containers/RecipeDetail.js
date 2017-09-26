@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import BasicText from '../components/common/BasicText';
+import LoadingIndicator from '../components/common/LoadingIndicator';
 
 class RecipeDetail extends Component {
   render() {
@@ -15,8 +16,8 @@ class RecipeDetail extends Component {
       return <BasicText text="An unexpected error occurred" />;
     }
 
-    if (loading || !recipe) {
-      return <BasicText text="Loading" />;
+    if (loading) {
+      return <LoadingIndicator />;
     }
 
     const {
@@ -36,42 +37,36 @@ class RecipeDetail extends Component {
 
     return (
       <View>
-        <Text>
-          { title }
-        </Text>
+        <Image
+          style={{width: 50, height: 50}}
+          source={{uri: image}}
+        />
+        <Text>{title}</Text>
+        <Text>Preparation time: {preparationTime}</Text>
+        <Text>Servings: {servingCount}</Text>
       </View>
     );
-
-    // return (
-    //   <View>
-    //     <Image
-    //       style={{width: 50, height: 50}}
-    //       source={{uri: image}}
-    //     />
-    //     <Text>{title}</Text>
-    //     <Text>Preparation time: {preparationTime}</Text>
-    //     <Text>Servings: {servingCount}</Text>
-    //     <View>
-    //       {directions.split('*)').map((direction, index) => {
-    //         if (!index) {
-    //           return null;
-    //         }
-
-    //         return <Text key={index}>{index} {direction}</Text>;
-    //       })}
-    //     </View>
-    //     {ingredients.map(ingredient =>
-    //       <View key={ingredient.id}>
-    //         <Text>{ingredient.name}</Text>
-    //         <Text>{ingredient.amount}</Text>
-    //         <Text>{ingredient.amountUnit}</Text>
-    //       </View>
-    //     )}
-    //   </View>
-    // );
   }
 }
 
+
+        // <View>
+        //   {directions.split('*)').map((direction, index) => {
+        //     if (!index) {
+        //       return null;
+        //     }
+
+        //     return <Text key={index}>{index} {direction}</Text>;
+        //   })}
+        // </View>
+
+        // {ingredients.map(ingredient =>
+        //   <View key={ingredient.id}>
+        //     <Text>{ingredient.name}</Text>
+        //     <Text>{ingredient.amount}</Text>
+        //     <Text>{ingredient.amountUnit}</Text>
+        //   </View>
+        // )}
 const RecipeDetailQuery = gql`
   query RecipeDetailQuery($recipeID: String!) {
     recipe(id: $recipeID) {
