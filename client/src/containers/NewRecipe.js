@@ -1,10 +1,38 @@
 import React, { Component } from 'react';
-import { Text, TouchableHighlight, View } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+ } from 'react-native';
 import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+import StatusBar from '../components/common/StatusBar';
 import { RecipeListQuery } from './RecipeList';
+
+const styles = StyleSheet.create({
+  wrapper: {
+    marginTop: 30,
+    marginHorizontal: 15,
+  },
+  buttonStyle: {
+    alignSelf: 'stretch',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#007aff',
+  },
+  buttonTextStyle: {
+    alignSelf: 'center',
+    color: '#007aff',
+    fontSize: 16,
+    fontWeight: '600',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+});
 
 const Form = t.form.Form;
 
@@ -32,7 +60,13 @@ class NewRecipe extends Component {
     this.setState({ value: null });
   }
 
+  setVisibility = (visibility) => {
+    this.setState({ visible: visibility});
+  }
+
   _onPress = () => {
+    this.setVisibility(true);
+    setTimeout(() => { this.setVisibility(false) } , 1000);
     const value = this.refs.recipeForm.getValue();
     const validate = this.refs.recipeForm.validate();
 
@@ -51,18 +85,25 @@ class NewRecipe extends Component {
   }
 
   render() {
-    console.log('this.props', this.props)
     return (
-      <View>
-        <Form
-          ref="recipeForm"
-          type={Recipe}
-          value={this.state.value}
-          onChange={this._onChange}
+      <View style={{marginTop: 20}}>
+        <StatusBar
+          visible={this.state.visible}
+          text={'Done!'}
         />
-        <TouchableHighlight onPress={this._onPress}>
-          <Text>Save</Text>
-        </TouchableHighlight>
+        <View style={styles.wrapper}>
+          <Form
+            ref="recipeForm"
+            type={Recipe}
+            value={this.state.value}
+            onChange={this._onChange}
+          />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={this._onPress}>
+            <Text style={styles.buttonTextStyle}>Save</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }

@@ -1,6 +1,6 @@
 # Receptar
 
-This is example of what prasaciny you can do with graphQL technology and a little bit of React.
+This is example of graphQL technology and a little bit of React.
 
 # Installation
 
