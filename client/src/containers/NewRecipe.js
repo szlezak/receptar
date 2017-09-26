@@ -3,6 +3,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
   StyleSheet,
  } from 'react-native';
 import t from 'tcomb-form-native';
@@ -10,10 +11,9 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import StatusBar from '../components/common/StatusBar';
-import { RecipeListQuery } from './RecipeList';
 
 const styles = StyleSheet.create({
-  wrapper: {
+  'wrapper': {
     marginTop: 30,
     marginHorizontal: 15,
   },
@@ -36,74 +36,100 @@ const styles = StyleSheet.create({
 
 const Form = t.form.Form;
 
+const PositiveNumber = t.refinement(t.Number, (n) => { n >= 0 });
+
 const Recipe = t.struct({
   title: t.String,
-  preparationTime: t.Number,
-  servingCount: t.Number,
-  directions: t.String,
+  preparationTime: PositiveNumber,
+  servingCount: PositiveNumber,
+  directions: t.maybe(t.String),
 });
 
+const options = {
+  fields: {
+    title: {
+      error: 'Title can\'t be empty!',
+    },
+    preparationTime: {
+      error: 'Preparation time needs to be positive number!'
+    },
+    servingCount: {
+      error: 'Serving count needs to be positive number!'
+    },
+    directions: {
+      multiline: true,
+      help: 'Markdown: *) divides lines',
+      stylesheet: {
+          ...Form.stylesheet,
+          textbox: {
+            ...Form.stylesheet.textbox,
+            normal: {
+              ...Form.stylesheet.textbox.normal,
+              height: 200,
+            },
+            error: {
+              ...Form.stylesheet.textbox.error,
+              height: 200,
+            },
+          },
+        },
+      },
+    }
+  };
+
 class NewRecipe extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: null,
-    };
+  // _clearForm = () => {
+  //   this.setState({ value: null });
+constructor() {
+  super();
+  this.state = {
+    visible: false,
   }
+}
 
-  _onChange = (value) => {
-    this.setState({ value });
-  }
+setVisibility = (visibility) => {
+  this.setState({ visible: visibility});
+}
 
-  _clearForm = () => {
-    this.setState({ value: null });
-  }
+_onPress = () => {
+  const validate = this.refs.recipeForm.validate();
 
-  setVisibility = (visibility) => {
-    this.setState({ visible: visibility});
-  }
-
-  _onPress = () => {
+  if (validate.errors.length === 0) {
     this.setVisibility(true);
     setTimeout(() => { this.setVisibility(false) } , 1000);
     const value = this.refs.recipeForm.getValue();
-    const validate = this.refs.recipeForm.validate();
-
-    if (!value) { return null; }
-
-    this.props.mutate({
-      variables: {
-        recipe: {
-          title: value.title,
-        }
-      },
-      refetchQueries: [ { query: RecipeListQuery }],
-    });
-
-    this._clearForm();
+    if (value) {
+      this.props.mutate({
+        variables: {
+          recipe: {
+            title: value.title,
+          }
+        },
+      });
+    }
   }
+}
 
   render() {
+    console.log('this.props', this.props)
     return (
       <View style={{marginTop: 20}}>
         <StatusBar
           visible={this.state.visible}
           text={'Done!'}
         />
-        <View style={styles.wrapper}>
+        <ScrollView style={styles.wrapper}>
           <Form
             ref="recipeForm"
             type={Recipe}
-            value={this.state.value}
-            onChange={this._onChange}
+            options={options}
           />
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={this._onPress}>
             <Text style={styles.buttonTextStyle}>Save</Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       </View>
     );
   }
