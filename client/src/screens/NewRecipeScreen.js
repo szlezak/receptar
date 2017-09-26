@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+
+import NewRecipeContainer from '../containers/NewRecipe';
 
 class NewRecipeScreen extends Component {
   render() {
-    return (
-      <View>
-        <Text>
-          New Recipe
-        </Text>
-      </View>
-    );
+    return <NewRecipeContainer />;
   }
 }
 
