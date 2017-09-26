@@ -10,6 +10,7 @@ import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+import { RecipeListQuery }from './RecipeList';
 import StatusBar from '../components/common/StatusBar';
 
 const styles = StyleSheet.create({
@@ -36,13 +37,19 @@ const styles = StyleSheet.create({
 
 const Form = t.form.Form;
 
-const PositiveNumber = t.refinement(t.Number, (n) => { n >= 0 });
+const PositiveNumber = t.refinement(t.Number, (n) => { n > 0 }); // TODO: correct it
 
 const Recipe = t.struct({
   title: t.String,
-  preparationTime: PositiveNumber,
-  servingCount: PositiveNumber,
+  image: t.maybe(t.String),
+  preparationTime: t.Number,
+  servingCount: t.Number,
   directions: t.maybe(t.String),
+  ingredients: t.struct({
+    name: t.String,
+    amount: t.Number,
+    amountUnit: t.String,
+  }),
 });
 
 const options = {
@@ -78,37 +85,71 @@ const options = {
   };
 
 class NewRecipe extends Component {
-  // _clearForm = () => {
-  //   this.setState({ value: null });
-constructor() {
-  super();
-  this.state = {
-    visible: false,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      visible: false,
+      value: null,
+    }
   }
-}
 
-setVisibility = (visibility) => {
-  this.setState({ visible: visibility});
-}
+  _onChange = (value) => {
+    this.setState({ value });
+  }
 
-_onPress = () => {
-  const validate = this.refs.recipeForm.validate();
+  _clearForm = () => {
+    this.setState({ value: null });
+  }
 
-  if (validate.errors.length === 0) {
-    this.setVisibility(true);
-    setTimeout(() => { this.setVisibility(false) } , 1000);
-    const value = this.refs.recipeForm.getValue();
-    if (value) {
+  setVisibility = (visibility) => {
+    this.setState({ visible: visibility});
+  }
+
+  _onPress = () => {
+    const validate = this.refs.recipeForm.validate();
+
+    if (validate.errors.length === 0) {
+      this.setVisibility(true);
+      setTimeout(() => { this.setVisibility(false) } , 1000);
+      const value = this.refs.recipeForm.getValue();
+
+      const {
+        title,
+        image,
+        preparationTime,
+        servingCount,
+        directions,
+        ingredients,
+      } = value || {};
+
+      const {
+        name,
+        amount,
+        amountUnit,
+      } = ingredients || {};
+
       this.props.mutate({
         variables: {
           recipe: {
-            title: value.title,
-          }
+            title,
+            image,
+            preparationTime,
+            servingCount,
+            directions,
+            ingredients: {
+              name,
+              amount,
+              amountUnit,
+            },
+          },
         },
+        refetchQueries: [{ query: RecipeListQuery }],
       });
     }
+
+    this._clearForm();
   }
-}
 
   render() {
     console.log('this.props', this.props)
@@ -123,6 +164,8 @@ _onPress = () => {
             ref="recipeForm"
             type={Recipe}
             options={options}
+            value={this.state.value}
+            onChange={this._onChange}
           />
           <TouchableOpacity
             style={styles.buttonStyle}

@@ -37,10 +37,6 @@ class RecipeDetail extends Component {
 
     return (
       <View>
-        <Image
-          style={{width: 50, height: 50}}
-          source={{uri: image}}
-        />
         <Text>{title}</Text>
         <Text>Preparation time: {preparationTime}</Text>
         <Text>Servings: {servingCount}</Text>
@@ -71,6 +67,15 @@ const RecipeDetailQuery = gql`
   query RecipeDetailQuery($recipeID: String!) {
     recipe(id: $recipeID) {
       title
+      image
+      preparationTime
+      directions
+      servingCount
+      ingredients {
+        name
+        amountUnit
+        amount
+      }
     }
   }
 `;

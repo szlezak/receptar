@@ -8,6 +8,7 @@ const ingredientSchema = new Schema({
 
 const recipeSchema = new Schema({
   title: String,
+  image: String,
   preparationTime: Number,
   servingCount: Number,
   sideDish: String,
