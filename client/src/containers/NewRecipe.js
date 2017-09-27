@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginHorizontal: 15,
   },
+  textStyle: {
+    fontSize: 22,
+    paddingBottom: 5,
+  },
   buttonStyle: {
     alignSelf: 'stretch',
     backgroundColor: '#fff',
@@ -124,7 +128,6 @@ class NewRecipeContainer extends Component {
   }
 
   render() {
-    console.log(this.state.ingredients);
     return (
       <View style={{ marginTop: 20 }}>
         <StatusBar
@@ -132,6 +135,7 @@ class NewRecipeContainer extends Component {
           text="Done!"
         />
         <ScrollView style={styles.wrapper}>
+          <Text style={styles.textStyle}>Recipe details</Text>
           <Form
             ref="recipeForm"
             type={recipe}
@@ -139,7 +143,8 @@ class NewRecipeContainer extends Component {
             value={this.state.value}
             onChange={this.onChange}
           />
-          <View>
+          <View style={{ paddingVertical: 10 }}>
+            <Text style={styles.textStyle}>Ingredients</Text>
             <Form
               ref="ingredientForm"
               type={ingredient}
@@ -158,7 +163,7 @@ class NewRecipeContainer extends Component {
             style={styles.buttonStyle}
             onPress={this.onPress}
           >
-            <Text style={styles.buttonTextStyle}>Save</Text>
+            <Text style={styles.buttonTextStyle}>Save Recipe</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
