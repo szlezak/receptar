@@ -108,7 +108,7 @@ class NewRecipeContainer extends Component {
         servingCount,
         directions,
       } = value || {};
-
+const { ingredients } = this.state;
       this.props.mutate({
         variables: {
           recipe: {
@@ -116,7 +116,7 @@ class NewRecipeContainer extends Component {
             preparationTime,
             servingCount,
             directions,
-            ...this.state.ingredients,
+            ingredients,
           },
         },
         refetchQueries: [{ query: RecipeListQuery }],
