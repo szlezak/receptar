@@ -12,7 +12,12 @@ import { graphql } from 'react-apollo';
 
 import StatusBar from '../components/common/StatusBar';
 import { RecipeListQuery } from './RecipeList';
-import { recipe, options } from '../components/newRecipe/FormStructure';
+import {
+  ingredient,
+  ingredientOptions,
+  options,
+  recipe,
+} from '../components/newRecipe/FormStructure';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -45,6 +50,8 @@ class NewRecipeContainer extends Component {
     this.state = {
       visible: false,
       value: null,
+      ingredientValue: null,
+      ingredients: [],
     };
   }
 
@@ -52,12 +59,35 @@ class NewRecipeContainer extends Component {
     this.setState({ value });
   }
 
+  onIngredientChange = (ingredientValue) => {
+    this.setState({ ingredientValue });
+  }
+
   clearForm = () => {
-    this.setState({ value: null });
+    this.setState({
+      value: null,
+      ingredientValue: null,
+      ingredients: [],
+    });
+  }
+
+  clearIngredientForm = () => {
+    this.setState({ ingredientValue: null });
   }
 
   setVisibility = (visibility) => {
     this.setState({ visible: visibility });
+  }
+
+  onIngredientPress = () => {
+    const validate = this.refs.ingredientForm.validate();
+
+    if (validate.errors.length === 0) {
+      const ingredientValue = this.refs.ingredientForm.getValue();
+
+      this.setState({ ingredients: [...this.state.ingredients, ingredientValue] });
+      this.clearIngredientForm();
+    }
   }
 
   onPress = () => {
@@ -73,14 +103,7 @@ class NewRecipeContainer extends Component {
         preparationTime,
         servingCount,
         directions,
-        ingredients,
       } = value || {};
-
-      const {
-        name,
-        amount,
-        amountUnit,
-      } = ingredients || {};
 
       this.props.mutate({
         variables: {
@@ -89,22 +112,19 @@ class NewRecipeContainer extends Component {
             preparationTime,
             servingCount,
             directions,
-            ingredients: {
-              name,
-              amount,
-              amountUnit,
-            },
+            ...this.state.ingredients,
           },
         },
         refetchQueries: [{ query: RecipeListQuery }],
       });
 
+      this.clearIngredientForm();
       this.clearForm();
     }
   }
 
   render() {
-    console.log(options);
+    console.log(this.state.ingredients);
     return (
       <View style={{ marginTop: 20 }}>
         <StatusBar
@@ -119,6 +139,21 @@ class NewRecipeContainer extends Component {
             value={this.state.value}
             onChange={this.onChange}
           />
+          <View>
+            <Form
+              ref="ingredientForm"
+              type={ingredient}
+              options={ingredientOptions}
+              value={this.state.ingredientValue}
+              onChange={this.onIngredientChange}
+            />
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={this.onIngredientPress}
+            >
+              <Text style={styles.buttonTextStyle}>Add Ingredient</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={this.onPress}

@@ -4,7 +4,7 @@ const PositiveNumber = t.refinement(t.Number, n => n > 0);
 
 const Form = t.form.Form;
 
-const Ingredients = t.struct({
+export const ingredient = t.struct({
   name: t.String,
   amount: PositiveNumber,
   amountUnit: t.maybe(t.String),
@@ -15,8 +15,18 @@ export const recipe = t.struct({
   preparationTime: PositiveNumber,
   servingCount: PositiveNumber,
   directions: t.maybe(t.String),
-  ingredients: t.maybe(Ingredients),
 });
+
+export const ingredientOptions = {
+  fields: {
+    name: {
+      error: 'Name can\'t be empty!',
+    },
+    amount: {
+      error: 'Amount needs to be positive number!',
+    },
+  },
+};
 
 export const options = {
   fields: {
@@ -29,16 +39,6 @@ export const options = {
     },
     servingCount: {
       error: 'Serving count needs to be positive number!',
-    },
-    ingredients: {
-      fields: {
-        name: {
-          error: 'Name can\'t be empty!',
-        },
-        amount: {
-          error: 'Amount needs to be positive number!',
-        },
-      },
     },
     directions: {
       multiline: true,
