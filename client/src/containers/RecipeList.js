@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import {
-  ListView,
+  FlatList,
   StyleSheet,
-  Text,
-  TouchableHighlight,
   View,
 } from 'react-native';
 
@@ -12,32 +10,25 @@ import { graphql } from 'react-apollo';
 
 import BasicText from '../components/common/BasicText';
 import LoadingIndicator from '../components/common/LoadingIndicator';
-import RecipeCell from '../components/RecipeCell';
+import RecipeCell from '../components/recipeList/RecipeCell';
 
 const styles = StyleSheet.create({
   listWrapper: {
     flex: 1,
+    backgroundColor: '#ffffff',
   },
 });
 
-class RecipeList extends Component {
-  constructor(props) {
-    super(props);
+class RecipeListContainer extends Component {
+  keyExtractor = item => item._id;
 
-    this.state = {
-      ds: new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2,
-      }),
-    };
-  }
-
-  _onRecipePress = ({ recipeData }) => {
+  onRecipePress = ({ recipeData }) => {
     this.props.navigation.navigate('RecipeDetail', { ...recipeData });
   };
 
-  _renderRecipeCell = (rowData, sectionID, rowID) => {
-    return <RecipeCell recipeData={rowData} onPress={this._onRecipePress} />;
-  }
+  renderRecipeCell = ({ item }) =>
+    <RecipeCell recipeData={item} onPress={this.onRecipePress} />;
+
 
   render() {
     const { data } = this.props || {};
@@ -51,14 +42,16 @@ class RecipeList extends Component {
       return <LoadingIndicator />;
     }
 
-    const dataSource = this.state.ds.cloneWithRows(recipes);
+    if (!recipes) {
+      return <BasicText text="Recipe list is empty" />;
+    }
 
     return (
       <View style={styles.listWrapper}>
-        <ListView
-          dataSource={dataSource}
-          renderRow={this._renderRecipeCell}
-          enableEmptySections
+        <FlatList
+          data={recipes}
+          renderItem={this.renderRecipeCell}
+          keyExtractor={this.keyExtractor}
         />
       </View>
     );
@@ -74,6 +67,6 @@ export const RecipeListQuery = gql`
   }
 `;
 
-const RecipeListWithData = graphql(RecipeListQuery)(RecipeList)
+const RecipeListWithData = graphql(RecipeListQuery)(RecipeListContainer);
 
 export default RecipeListWithData;

@@ -26,14 +26,14 @@ export const CookbookTab = TabNavigator({
     screen: RecipeStack,
     navigationOptions: {
       tabBarLabel: 'Recipe List',
-      tabBarIcon: ({ tintColor  }) => <Icon name="list" size={35} color={tintColor} />,
+      tabBarIcon: ({ tintColor }) => <Icon name="list" size={35} color={tintColor} />,
     },
   },
   NewRecipe: {
     screen: NewRecipeScreen,
     navigationOptions: {
       tabBarLabel: 'New Recipe',
-      tabBarIcon: ({ tintColor }) => <Icon name="note-add" size={35} color={tintColor} />
+      tabBarIcon: ({ tintColor }) => <Icon name="note-add" size={35} color={tintColor} />,
     },
   },
 });

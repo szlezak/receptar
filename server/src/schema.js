@@ -7,7 +7,6 @@ const typeDefs = `
   type Recipe {
     _id: ID!
     title: String
-    image: String,
     preparationTime: Int
     servingCount: Int
     sideDish: String
@@ -24,7 +23,6 @@ const typeDefs = `
 
   input RecipeInput {
     title: String
-    image: String,
     preparationTime: Int
     servingCount: Int
     sideDish: String

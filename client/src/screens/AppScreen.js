@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 
-import { CookbookTab } from '../navigation/router';
 import apolloClient from '../helpers/connection';
+import { CookbookTab } from '../navigation/router';
 
 class AppScreen extends Component {
   render() {

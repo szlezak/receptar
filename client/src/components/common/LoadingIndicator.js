@@ -8,13 +8,16 @@ const styles = StyleSheet.create({
   indicator: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#ffffff',
   },
 });
 
 function LoadingIndicator() {
+  const isAnimating = true;
+
   return (
     <ActivityIndicator
-      animating={true}
+      animating={isAnimating}
       style={styles.indicator}
       size="small"
     />

@@ -5,16 +5,16 @@ import {
   View,
   ScrollView,
   StyleSheet,
- } from 'react-native';
+} from 'react-native';
 import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { RecipeListQuery }from './RecipeList';
 import StatusBar from '../components/common/StatusBar';
+import { RecipeListQuery } from './RecipeList';
 
 const styles = StyleSheet.create({
-  'wrapper': {
+  wrapper: {
     marginTop: 30,
     marginHorizontal: 15,
   },
@@ -37,17 +37,16 @@ const styles = StyleSheet.create({
 
 const Form = t.form.Form;
 
-const PositiveNumber = t.refinement(t.Number, (n) => { n > 0 }); // TODO: correct it
+const PositiveNumber = t.refinement(t.Number, n => n > 0);
 
 const Recipe = t.struct({
   title: t.String,
-  image: t.maybe(t.String),
-  preparationTime: t.Number,
-  servingCount: t.Number,
+  preparationTime: PositiveNumber,
+  servingCount: PositiveNumber,
   directions: t.maybe(t.String),
   ingredients: t.struct({
     name: t.String,
-    amount: t.Number,
+    amount: PositiveNumber,
     amountUnit: t.String,
   }),
 });
@@ -58,65 +57,64 @@ const options = {
       error: 'Title can\'t be empty!',
     },
     preparationTime: {
-      error: 'Preparation time needs to be positive number!'
+      error: 'Preparation time needs to be positive number!',
     },
     servingCount: {
-      error: 'Serving count needs to be positive number!'
+      error: 'Serving count needs to be positive number!',
     },
     directions: {
       multiline: true,
       help: 'Markdown: *) divides lines',
       stylesheet: {
-          ...Form.stylesheet,
-          textbox: {
-            ...Form.stylesheet.textbox,
-            normal: {
-              ...Form.stylesheet.textbox.normal,
-              height: 200,
-            },
-            error: {
-              ...Form.stylesheet.textbox.error,
-              height: 200,
-            },
+        ...Form.stylesheet,
+        textbox: {
+          ...Form.stylesheet.textbox,
+          normal: {
+            ...Form.stylesheet.textbox.normal,
+            height: 200,
+          },
+          error: {
+            ...Form.stylesheet.textbox.error,
+            height: 200,
           },
         },
       },
-    }
-  };
+    },
+  },
+};
 
-class NewRecipe extends Component {
+class NewRecipeContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       visible: false,
       value: null,
-    }
+    };
   }
 
-  _onChange = (value) => {
+  onChange = (value) => {
     this.setState({ value });
   }
 
-  _clearForm = () => {
+  clearForm = () => {
     this.setState({ value: null });
   }
 
   setVisibility = (visibility) => {
-    this.setState({ visible: visibility});
+    this.setState({ visible: visibility });
   }
 
-  _onPress = () => {
+  onPress = () => {
     const validate = this.refs.recipeForm.validate();
 
     if (validate.errors.length === 0) {
       this.setVisibility(true);
-      setTimeout(() => { this.setVisibility(false) } , 1000);
+      setTimeout(() => { this.setVisibility(false); }, 1000);
       const value = this.refs.recipeForm.getValue();
 
       const {
         title,
-        image,
         preparationTime,
         servingCount,
         directions,
@@ -133,7 +131,6 @@ class NewRecipe extends Component {
         variables: {
           recipe: {
             title,
-            image,
             preparationTime,
             servingCount,
             directions,
@@ -148,16 +145,15 @@ class NewRecipe extends Component {
       });
     }
 
-    this._clearForm();
+    this.clearForm();
   }
 
   render() {
-    console.log('this.props', this.props)
     return (
-      <View style={{marginTop: 20}}>
+      <View style={{ marginTop: 20 }}>
         <StatusBar
           visible={this.state.visible}
-          text={'Done!'}
+          text="Done!"
         />
         <ScrollView style={styles.wrapper}>
           <Form
@@ -165,11 +161,12 @@ class NewRecipe extends Component {
             type={Recipe}
             options={options}
             value={this.state.value}
-            onChange={this._onChange}
+            onChange={this.onChange}
           />
           <TouchableOpacity
             style={styles.buttonStyle}
-            onPress={this._onPress}>
+            onPress={this.onPress}
+          >
             <Text style={styles.buttonTextStyle}>Save</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -186,6 +183,6 @@ const NewRecipeMutation = gql`
   }
 `;
 
-const NewRecipeWithMutation = graphql(NewRecipeMutation)(NewRecipe);
+const NewRecipeWithMutation = graphql(NewRecipeMutation)(NewRecipeContainer);
 
 export default NewRecipeWithMutation;
