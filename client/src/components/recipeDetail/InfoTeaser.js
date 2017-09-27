@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   wrapper: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: '#d3d3d3',
+    borderColor: '#bdbdbd',
     flexDirection: 'row',
   },
   label: {
@@ -28,12 +28,10 @@ class InfoTeaser extends Component {
     return (
       <View style={styles.wrapper}>
         <Text style={styles.label}>{preparationTime || 0} min</Text>
-        <Text style={styles.label}>{servingCount || 0} Servings</Text>
+        <Text style={styles.label}>{servingCount || 0} servings</Text>
       </View>
     );
   }
 }
 
 export default InfoTeaser;
-
-

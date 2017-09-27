@@ -1,39 +1,61 @@
 import React, { Component  } from 'react';
 import {
-  Image,
-  ScrollView,
+  StyleSheet,
   Text,
   View,
 } from 'react-native';
 
-class Ingredients extends Component {
-  render() {
-    const { ingredients } = this.props;
-    const {
-      name,
-      amountUnit,
-      amount,
-    } = ingredients || {};
+import EmptyLabel from '../common/EmptyLabel';
 
-    if (!ingredients) {
-      return (
-        <View>
-          <Text>
-            Recipe does not have any ingredients
-          </Text>
-        </View>
-      );
+const styles = StyleSheet.create({
+  wrapper: {
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    backgroundColor: '#ededed',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: '#bdbdbd',
+  },
+  label: {
+    fontSize: 20,
+    marginBottom: 10,
+    fontWeight: '700',
+  },
+  ingredientWrapper: {
+    flexDirection: 'row',
+  },
+  ingredientLabel: {
+    marginLeft: 5,
+  },
+});
+
+class Ingredients extends Component {
+  renderIngredients = () => {
+    const { ingredients } = this.props;
+
+    if (!ingredients.length) {
+      return <EmptyLabel label="Recipe does not have any ingredients" />;
     }
 
+    return ingredients.map(ingredient =>
+      <View style={styles.ingredientWrapper} key={ingredient._id}>
+        <Text>
+          {`\u2022 ${ingredient.amount}` || null}
+        </Text>
+        <Text>
+          {ingredient.amountUnit.toLowerCase() || null}
+        </Text>
+        <Text style={styles.ingredientLabel}>
+          {ingredient.name || null}
+        </Text>
+      </View>
+    );
+  }
+
+  render() {
     return (
-      <View>
-        {ingredients.map(ingredient =>
-          <View key={ingredient.id}>
-            <Text>{ingredient.name}</Text>
-            <Text>{ingredient.amount}</Text>
-            <Text>{ingredient.amountUnit}</Text>
-          </View>
-        )}
+      <View style={styles.wrapper}>
+        <Text style={styles.label}>Ingredients</Text>
+        {this.renderIngredients()}
       </View>
     );
   }

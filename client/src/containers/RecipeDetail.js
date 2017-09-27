@@ -37,6 +37,7 @@ const RecipeDetailQuery = gql`
       directions
       servingCount
       ingredients {
+        _id
         name
         amountUnit
         amount
