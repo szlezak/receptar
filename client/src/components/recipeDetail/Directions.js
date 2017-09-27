@@ -38,7 +38,6 @@ class Directions extends Component {
   }
 
   render() {
-
     return (
       <View style={styles.wrapper}>
         <Text style={styles.label}>Directions</Text>

@@ -1,4 +1,4 @@
-import React, { Component  } from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -36,7 +36,7 @@ class Ingredients extends Component {
       return <EmptyLabel label="Recipe does not have any ingredients" />;
     }
 
-    return ingredients.map(ingredient =>
+    return ingredients.map(ingredient => (
       <View style={styles.ingredientWrapper} key={ingredient._id}>
         <Text>
           {`\u2022 ${ingredient.amount}` || null}
@@ -48,6 +48,7 @@ class Ingredients extends Component {
           {ingredient.name || null}
         </Text>
       </View>
+    ),
     );
   }
 

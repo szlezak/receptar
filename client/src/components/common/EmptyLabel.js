@@ -8,7 +8,7 @@ import {
 const styles = StyleSheet.create({
   label: {
     fontSize: 14,
-  }
+  },
 });
 
 function EmptyLabel({ label }) {
@@ -20,4 +20,3 @@ function EmptyLabel({ label }) {
 }
 
 export default EmptyLabel;
-

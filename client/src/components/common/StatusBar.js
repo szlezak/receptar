@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Animated,
-  Easing,
   StyleSheet,
   Text,
   View,
@@ -32,7 +31,7 @@ class StatusBar extends Component {
   }
 
   componentWillMount() {
-    this._visibility = new Animated.Value(this.props.visible ? 1 : 0);
+    this.visibility = new Animated.Value(this.props.visible ? 1 : 0);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,11 +42,11 @@ class StatusBar extends Component {
     }
 
     Animated.timing(
-      this._visibility,
+      this.visibility,
       {
         toValue: nextProps.visible ? 1 : 0,
         duration: 300,
-      }
+      },
     ).start(() => this.setState({ visible: nextProps.visible }));
   }
 
@@ -63,13 +62,13 @@ class StatusBar extends Component {
     const { visible, style, children, ...rest } = this.props;
 
     const containerStyle = {
-      opacity: this._visibility.interpolate({
+      opacity: this.visibility.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 1],
       }),
       transform: [
         {
-          scale: this._visibility.interpolate({
+          scale: this.visibility.interpolate({
             inputRange: [0, 1],
             outputRange: [1.1, 1],
           }),

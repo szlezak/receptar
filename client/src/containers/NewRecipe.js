@@ -108,7 +108,9 @@ class NewRecipeContainer extends Component {
         servingCount,
         directions,
       } = value || {};
-const { ingredients } = this.state;
+
+      const { ingredients } = this.state;
+
       this.props.mutate({
         variables: {
           recipe: {

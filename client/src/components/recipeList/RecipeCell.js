@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 class RecipeCell extends Component {
-  _onCellPress = () => {
+  onCellPress = () => {
     const { onPress, recipeData } = this.props;
 
     onPress({ recipeData });
@@ -32,7 +32,7 @@ class RecipeCell extends Component {
     const { title } = recipeData || {};
 
     return (
-      <TouchableHighlight onPress={this._onCellPress}>
+      <TouchableHighlight onPress={this.onCellPress}>
         <View style={styles.cellWrapper}>
           <Text style={styles.title}>{title}</Text>
         </View>

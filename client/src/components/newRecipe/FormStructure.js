@@ -35,7 +35,7 @@ export const options = {
     },
     preparationTime: {
       error: 'Preparation time needs to be positive number!',
-      help: 'In minutes'
+      help: 'In minutes',
     },
     servingCount: {
       error: 'Serving count needs to be positive number!',
