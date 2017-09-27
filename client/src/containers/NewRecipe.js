@@ -12,6 +12,7 @@ import { graphql } from 'react-apollo';
 
 import StatusBar from '../components/common/StatusBar';
 import { RecipeListQuery } from './RecipeList';
+import { recipe, options } from '../components/newRecipe/FormStructure';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -36,52 +37,6 @@ const styles = StyleSheet.create({
 });
 
 const Form = t.form.Form;
-
-const PositiveNumber = t.refinement(t.Number, n => n > 0);
-
-const Recipe = t.struct({
-  title: t.String,
-  preparationTime: PositiveNumber,
-  servingCount: PositiveNumber,
-  directions: t.maybe(t.String),
-  ingredients: t.struct({
-    name: t.String,
-    amount: PositiveNumber,
-    amountUnit: t.String,
-  }),
-});
-
-const options = {
-  fields: {
-    title: {
-      error: 'Title can\'t be empty!',
-    },
-    preparationTime: {
-      error: 'Preparation time needs to be positive number!',
-    },
-    servingCount: {
-      error: 'Serving count needs to be positive number!',
-    },
-    directions: {
-      multiline: true,
-      help: 'Markdown: *) divides lines',
-      stylesheet: {
-        ...Form.stylesheet,
-        textbox: {
-          ...Form.stylesheet.textbox,
-          normal: {
-            ...Form.stylesheet.textbox.normal,
-            height: 200,
-          },
-          error: {
-            ...Form.stylesheet.textbox.error,
-            height: 200,
-          },
-        },
-      },
-    },
-  },
-};
 
 class NewRecipeContainer extends Component {
   constructor(props) {
@@ -143,12 +98,13 @@ class NewRecipeContainer extends Component {
         },
         refetchQueries: [{ query: RecipeListQuery }],
       });
-    }
 
-    this.clearForm();
+      this.clearForm();
+    }
   }
 
   render() {
+    console.log(options);
     return (
       <View style={{ marginTop: 20 }}>
         <StatusBar
@@ -158,7 +114,7 @@ class NewRecipeContainer extends Component {
         <ScrollView style={styles.wrapper}>
           <Form
             ref="recipeForm"
-            type={Recipe}
+            type={recipe}
             options={options}
             value={this.state.value}
             onChange={this.onChange}

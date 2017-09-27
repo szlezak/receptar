@@ -1,0 +1,62 @@
+import t from 'tcomb-form-native';
+
+const PositiveNumber = t.refinement(t.Number, n => n > 0);
+
+const Form = t.form.Form;
+
+const Ingredients = t.struct({
+  name: t.String,
+  amount: PositiveNumber,
+  amountUnit: t.maybe(t.String),
+});
+
+export const recipe = t.struct({
+  title: t.String,
+  preparationTime: PositiveNumber,
+  servingCount: PositiveNumber,
+  directions: t.maybe(t.String),
+  ingredients: t.maybe(Ingredients),
+});
+
+export const options = {
+  fields: {
+    title: {
+      error: 'Title can\'t be empty!',
+    },
+    preparationTime: {
+      error: 'Preparation time needs to be positive number!',
+      help: 'In minutes'
+    },
+    servingCount: {
+      error: 'Serving count needs to be positive number!',
+    },
+    ingredients: {
+      fields: {
+        name: {
+          error: 'Name can\'t be empty!',
+        },
+        amount: {
+          error: 'Amount needs to be positive number!',
+        },
+      },
+    },
+    directions: {
+      multiline: true,
+      help: 'Markdown: *) divides lines',
+      stylesheet: {
+        ...Form.stylesheet,
+        textbox: {
+          ...Form.stylesheet.textbox,
+          normal: {
+            ...Form.stylesheet.textbox.normal,
+            height: 200,
+          },
+          error: {
+            ...Form.stylesheet.textbox.error,
+            height: 200,
+          },
+        },
+      },
+    },
+  },
+};
