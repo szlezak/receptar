@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import BasicText from '../components/common/BasicText';
+import ErrorLabel from '../components/common/ErrorLabel';
 import LoadingIndicator from '../components/common/LoadingIndicator';
 import RecipeDetail from '../components/recipeDetail/RecipeDetail';
 
@@ -12,7 +12,7 @@ class RecipeDetailContainer extends Component {
     const { error, loading, recipe } = data || {};
 
     if (error) {
-      return <BasicText text="An unexpected error occurred" />;
+      return <ErrorLabel text="An unexpected error occurred" />;
     }
 
     if (loading) {
@@ -20,7 +20,7 @@ class RecipeDetailContainer extends Component {
     }
 
     if (!recipe) {
-      return <BasicText text="Recipe does not have a detail" />;
+      return <ErrorLabel text="Recipe does not have a detail" />;
     }
 
     return (

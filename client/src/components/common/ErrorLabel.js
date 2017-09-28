@@ -13,10 +13,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
+    fontWeight: '700',
   },
 });
 
-function BasicText({ text }) {
+function ErrorLabel({ text }) {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.label}>{text}</Text>
@@ -24,4 +25,4 @@ function BasicText({ text }) {
   );
 }
 
-export default BasicText;
+export default ErrorLabel;

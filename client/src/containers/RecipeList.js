@@ -8,7 +8,7 @@ import {
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import BasicText from '../components/common/BasicText';
+import ErrorLabel from '../components/common/ErrorLabel';
 import LoadingIndicator from '../components/common/LoadingIndicator';
 import RecipeCell from '../components/recipeList/RecipeCell';
 
@@ -35,7 +35,7 @@ class RecipeListContainer extends Component {
     const { error, loading, recipes } = data || {};
 
     if (error) {
-      return <BasicText text="An unexpected error occurred" />;
+      return <ErrorLabel text="An unexpected error occurred" />;
     }
 
     if (loading) {
@@ -43,7 +43,7 @@ class RecipeListContainer extends Component {
     }
 
     if (!recipes) {
-      return <BasicText text="Recipe list is empty" />;
+      return <ErrorLabel text="Recipe list is empty" />;
     }
 
     return (

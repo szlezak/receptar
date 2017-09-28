@@ -10,23 +10,18 @@ import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+import BasicLabel from '../components/common/BasicLabel';
+import IngredientForm from '../components/newRecipe/IngredientForm';
 import StatusBar from '../components/common/StatusBar';
 import { RecipeListQuery } from './RecipeList';
-import {
-  ingredient,
-  ingredientOptions,
-  options,
-  recipe,
-} from '../components/newRecipe/FormStructure';
+import { options, recipe } from '../helpers/FormStructure';
 
 const styles = StyleSheet.create({
   wrapper: {
     marginTop: 30,
-    marginHorizontal: 15,
   },
-  textStyle: {
-    fontSize: 22,
-    paddingBottom: 5,
+  formWrapper: {
+    marginHorizontal: 15,
   },
   buttonStyle: {
     alignSelf: 'stretch',
@@ -54,7 +49,6 @@ class NewRecipeContainer extends Component {
     this.state = {
       visible: false,
       value: null,
-      ingredientValue: null,
       ingredients: [],
     };
   }
@@ -63,35 +57,21 @@ class NewRecipeContainer extends Component {
     this.setState({ value });
   }
 
-  onIngredientChange = (ingredientValue) => {
-    this.setState({ ingredientValue });
-  }
-
   clearForm = () => {
     this.setState({
       value: null,
-      ingredientValue: null,
       ingredients: [],
     });
-  }
-
-  clearIngredientForm = () => {
-    this.setState({ ingredientValue: null });
   }
 
   setVisibility = (visibility) => {
     this.setState({ visible: visibility });
   }
 
-  onIngredientPress = () => {
-    const validate = this.refs.ingredientForm.validate();
+  onIngredientPress = (newIngredient) => {
+    const { ingredients } = this.state;
 
-    if (validate.errors.length === 0) {
-      const ingredientValue = this.refs.ingredientForm.getValue();
-
-      this.setState({ ingredients: [...this.state.ingredients, ingredientValue] });
-      this.clearIngredientForm();
-    }
+    this.setState({ ingredients: [...ingredients, newIngredient] });
   }
 
   onPress = () => {
@@ -124,43 +104,34 @@ class NewRecipeContainer extends Component {
         refetchQueries: [{ query: RecipeListQuery }],
       });
 
-      this.clearIngredientForm();
       this.clearForm();
     }
   }
 
   render() {
+    const { ingredients } = this.state;
+
     return (
-      <View style={{ marginTop: 20 }}>
+      <View style={styles.wrapper}>
         <StatusBar
           visible={this.state.visible}
-          text="Done!"
+          text="Your recipe has been saved!"
         />
-        <ScrollView style={styles.wrapper}>
-          <Text style={styles.textStyle}>Recipe details</Text>
-          <Form
-            ref="recipeForm"
-            type={recipe}
-            options={options}
-            value={this.state.value}
-            onChange={this.onChange}
-          />
-          <View style={{ paddingVertical: 10 }}>
-            <Text style={styles.textStyle}>Ingredients</Text>
+        <ScrollView>
+          <BasicLabel label="Recipe details"/>
+          <View style={styles.formWrapper}>
             <Form
-              ref="ingredientForm"
-              type={ingredient}
-              options={ingredientOptions}
-              value={this.state.ingredientValue}
-              onChange={this.onIngredientChange}
+              ref="recipeForm"
+              type={recipe}
+              options={options}
+              value={this.state.value}
+              onChange={this.onChange}
             />
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={this.onIngredientPress}
-            >
-              <Text style={styles.buttonTextStyle}>Add Ingredient</Text>
-            </TouchableOpacity>
           </View>
+          <IngredientForm
+            ingredients={ingredients}
+            onIngredientPress={this.onIngredientPress}
+          />
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={this.onPress}

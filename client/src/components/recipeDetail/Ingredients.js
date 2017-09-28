@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import EmptyLabel from '../common/EmptyLabel';
+import IngredientList from '../common/IngredientList';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -20,12 +21,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: '700',
   },
-  ingredientWrapper: {
-    flexDirection: 'row',
-  },
-  ingredientLabel: {
-    marginLeft: 5,
-  },
 });
 
 class Ingredients extends Component {
@@ -36,20 +31,7 @@ class Ingredients extends Component {
       return <EmptyLabel label="Recipe does not have any ingredients" />;
     }
 
-    return ingredients.map(ingredient => (
-      <View style={styles.ingredientWrapper} key={ingredient._id}>
-        <Text>
-          {`\u2022 ${ingredient.amount}` || null}
-        </Text>
-        <Text>
-          {ingredient.amountUnit.toLowerCase() || null}
-        </Text>
-        <Text style={styles.ingredientLabel}>
-          {ingredient.name || null}
-        </Text>
-      </View>
-    ),
-    );
+    return <IngredientList ingredients={ingredients} />
   }
 
   render() {
