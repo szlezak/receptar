@@ -25,19 +25,18 @@ class IngredientList extends Component {
 
     return (
       <View>
-        {ingredients.map(ingredient => (
-          <View style={styles.ingredientWrapper} key={ingredient._id}>
-            <Text>
-              {`\u2022 ${ingredient.amount}` || null}
-            </Text>
-            <Text>
-              {ingredient.amountUnit.toLowerCase() || null}
-            </Text>
-            <Text style={styles.ingredientLabel}>
-              {ingredient.name || null}
-            </Text>
-          </View>
-        ))}
+        {ingredients.map((ingredient) => {
+          const { _id, amount, amountUnit, name } = ingredient || {};
+          const customizedunit = amountUnit && amountUnit.toLowerCase();
+
+          return (
+            <View style={styles.ingredientWrapper} key={_id}>
+              <Text>{`\u2022 ${amount}`}</Text>
+              <Text>{customizedunit}</Text>
+              <Text style={styles.ingredientLabel}>{name}</Text>
+            </View>
+          );
+        })}
       </View>
     );
   }
