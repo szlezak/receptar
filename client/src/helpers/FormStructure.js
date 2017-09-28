@@ -17,13 +17,48 @@ export const recipe = t.struct({
   directions: t.maybe(t.String),
 });
 
+const textInputStyle = {
+  ...Form.stylesheet,
+  textbox: {
+    ...Form.stylesheet.textbox,
+    normal: {
+      ...Form.stylesheet.textbox.normal,
+      backgroundColor: '#ffffff',
+    },
+    error: {
+      ...Form.stylesheet.textbox.error,
+      backgroundColor: '#ffffff',
+    },
+  },
+};
+
+const textAreaStyle = {
+  ...Form.stylesheet,
+  textbox: {
+    ...Form.stylesheet.textbox,
+    normal: {
+      ...Form.stylesheet.textbox.normal,
+      height: 200,
+    },
+    error: {
+      ...Form.stylesheet.textbox.error,
+      height: 200,
+    },
+  },
+};
+
 export const ingredientOptions = {
   fields: {
     name: {
       error: 'Name can\'t be empty!',
+      stylesheet: textInputStyle,
     },
     amount: {
       error: 'Amount needs to be positive number!',
+      stylesheet: textInputStyle,
+    },
+    amountUnit: {
+      stylesheet: textInputStyle,
     },
   },
 };
@@ -43,20 +78,7 @@ export const options = {
     directions: {
       multiline: true,
       help: 'Markdown: *) divides lines',
-      stylesheet: {
-        ...Form.stylesheet,
-        textbox: {
-          ...Form.stylesheet.textbox,
-          normal: {
-            ...Form.stylesheet.textbox.normal,
-            height: 200,
-          },
-          error: {
-            ...Form.stylesheet.textbox.error,
-            height: 200,
-          },
-        },
-      },
+      stylesheet: textAreaStyle,
     },
   },
 };

@@ -6,33 +6,33 @@ import {
 } from 'react-native';
 
 const styles = StyleSheet.create({
-  buttonStyle: {
+  buttonWrapper: {
+    marginHorizontal: 15,
     alignSelf: 'stretch',
     borderRadius: 5,
     borderWidth: 1,
   },
-  buttonTextStyle: {
+  buttonLabel: {
     alignSelf: 'center',
     fontSize: 16,
     fontWeight: '600',
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingVertical: 10,
   },
 });
 
-class Button extends Component {
+class BasicButton extends Component {
   render() {
     const { backgroundColor, borderColor, color, onPress, text } = this.props;
 
     return (
       <TouchableOpacity
-        style={[styles.buttonStyle, { backgroundColor, borderColor }]}
+        style={[styles.buttonWrapper, { backgroundColor, borderColor }]}
         onPress={onPress}
       >
-        <Text style={[styles.buttonTextStyle, { color }]}>{text}</Text>
+        <Text style={[styles.buttonLabel, { color }]}>{text}</Text>
       </TouchableOpacity>
     );
   }
 }
 
-export default Button;
+export default BasicButton;

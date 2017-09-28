@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import {
-  Text,
-  TouchableOpacity,
-  View,
   ScrollView,
   StyleSheet,
+  View,
 } from 'react-native';
 import t from 'tcomb-form-native';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import BasicLabel from '../components/common/BasicLabel';
-import Button from '../components/common/Button';
+import BasicButton from '../components/common/BasicButton';
 import IngredientForm from '../components/newRecipe/IngredientForm';
 import StatusBar from '../components/common/StatusBar';
 import { RecipeListQuery } from './RecipeList';
@@ -20,6 +18,7 @@ import { options, recipe } from '../helpers/FormStructure';
 const styles = StyleSheet.create({
   wrapper: {
     marginTop: 30,
+    marginBottom: 15,
   },
   formWrapper: {
     marginHorizontal: 15,
@@ -54,8 +53,11 @@ class NewRecipeContainer extends Component {
     this.setState({ visible: visibility });
   }
 
-  onIngredientPress = (newIngredient) => {
+  onIngredientPress = (ingredient) => {
     const { ingredients } = this.state;
+
+    const newIngredientId = ingredients.length + 1;
+    const newIngredient = { _id: newIngredientId, ...ingredient };
 
     this.setState({ ingredients: [...ingredients, newIngredient] });
   }
@@ -104,7 +106,7 @@ class NewRecipeContainer extends Component {
           text="Your recipe has been saved!"
         />
         <ScrollView>
-          <BasicLabel label="Recipe details"/>
+          <BasicLabel label="Recipe details" />
           <View style={styles.formWrapper}>
             <Form
               ref="recipeForm"
@@ -118,14 +120,7 @@ class NewRecipeContainer extends Component {
             ingredients={ingredients}
             onIngredientPress={this.onIngredientPress}
           />
-            <Button
-              backgroundColor={'#fff'}
-              borderColor={'#007aff'}
-              color={'#007aff'}
-              text={'Add Ingredient'}
-              onPress={this.onIngredientPress}
-            />
-          <Button
+          <BasicButton
             backgroundColor={'#fff'}
             borderColor={'#007aff'}
             color={'#007aff'}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
 } from 'react-native';
 
 import BasicLabel from '../common/BasicLabel';

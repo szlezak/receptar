@@ -31,7 +31,7 @@ class Ingredients extends Component {
       return <EmptyLabel label="Recipe does not have any ingredients" />;
     }
 
-    return <IngredientList ingredients={ingredients} />
+    return <IngredientList ingredients={ingredients} />;
   }
 
   render() {
