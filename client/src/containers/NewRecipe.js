@@ -56,7 +56,6 @@ class NewRecipeContainer extends Component {
   onIngredientPress = (ingredient) => {
     const { ingredients } = this.state;
 
-    const newIngredientId = ingredients.length + 1;
     const newIngredient = { ...ingredient };
 
     this.setState({ ingredients: [...ingredients, newIngredient] });
