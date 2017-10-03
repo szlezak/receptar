@@ -16,6 +16,20 @@ const styles = StyleSheet.create({
 });
 
 class IngredientList extends Component {
+
+  hash(input) {
+    let hash = 0;
+    const length = input.length;
+
+    for (i = 0; i < length; i++) {
+      charC = input.charCodeAt(i);
+      hash = ((hash << 5) - hash) + charC;
+      hash = hash & hash;
+    }
+
+    return hash;
+  }
+
   render() {
     const { ingredients } = this.props;
 
@@ -30,7 +44,7 @@ class IngredientList extends Component {
           const customizedunit = amountUnit && amountUnit.toLowerCase();
 
           return (
-            <View style={styles.ingredientWrapper} key={_id}>
+            <View style={styles.ingredientWrapper} key={this.hash(name+amount+amountUnit)}>
               <Text>{`\u2022 ${amount}`}</Text>
               <Text>{customizedunit}</Text>
               <Text style={styles.ingredientLabel}>{name}</Text>
