@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
 });
 
 class IngredientList extends Component {
+
   render() {
     const { ingredients } = this.props;
 
@@ -27,12 +28,13 @@ class IngredientList extends Component {
       <View>
         {ingredients.map((ingredient) => {
           const { _id, amount, amountUnit, name } = ingredient || {};
-          const customizedunit = amountUnit && amountUnit.toLowerCase();
+          const customizedUnit = amountUnit && amountUnit.toLowerCase();
+          const customizedKey = `${name+amount+amountUnit}`;
 
           return (
-            <View style={styles.ingredientWrapper} key={_id}>
+            <View style={styles.ingredientWrapper} key={customizedKey}>
               <Text>{`\u2022 ${amount}`}</Text>
-              <Text>{customizedunit}</Text>
+              <Text>{customizedUnit}</Text>
               <Text style={styles.ingredientLabel}>{name}</Text>
             </View>
           );
